@@ -20,14 +20,15 @@ const store = createStore({
       state.commit('setAllPosts', posts)
     },
     errasePosts (state) {
-      state.commit('setAllPosts', null)
+      state.commit('setAllPosts', [])
     }
 
   },
   modules: {},
   getters: {
     getAllPosts: state => state.allPosts,
-    getCurrentPost: state => state.currentPost
+    getCurrentPost: state => state.currentPost,
+    getTotalPosts: state => state.allPosts.length
   }
 })
 
