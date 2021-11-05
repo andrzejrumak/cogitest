@@ -1,29 +1,36 @@
 <template>
 <h2>Posty</h2>
-<div v-for="post in payload" :key="post.id">
+  <button @click="getposts">Listuj posty</button>
+  <button @click="erraselist">Kasuj posty</button>
+<!-- <div v-for="post in payload" :key="post.id"> -->
+  <div v-for="post in posts" :key="post.id">
   <h2>Tytuł: {{ post.title }}</h2>
   <h2>Id Autora: {{ post.userId }}</h2>
   <h3>Treść: {{ post.body }}</h3>
-  <button>Czytaj Post</button>
-</div>
+  <button @click="getposts">Czytaj więcej</button>
+  </div>
+
 <post-list></post-list>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, computed } from 'vue'
+import store from '../store'
 import PostList from '@/components/PostList.vue'
-// import { makeRequest, payload, loading } from '@/composables/UseFetch.js'
 
-const url = ref('https://jsonplaceholder.typicode.com/posts')
-const payload = ref([])
+const posts = computed(() => {
+  return store.getters.getAllPosts
+})
+
+const getposts = () => {
+  store.dispatch('setAllPosts')
+}
+const erraselist = () => {
+  store.dispatch('errasePosts')
+}
 onMounted(() => {
-  const makeRequest = async () => {
-    const res = await fetch(url.value)
-    payload.value = await res.json()
-  }
-  makeRequest()
-
-  // // this.$store.dispatch('getPosts')
+  getposts()
   console.log('Component is mounted!')
 })
+
 </script>
