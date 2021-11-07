@@ -6,18 +6,17 @@
   <div style=" display: flex; flex-direction: row; justify-content: center; margin: 3px">
     <div v-for="(paginnumber, index) in paginnumbers"
     :key="index">
-      <button @click="showCurrentPage(paginnumber)">{{ paginnumber }}</button>
+      <button @click="getCurrentPage(paginnumber)">{{ paginnumber }}</button>
     </div>
   </div>
-
-<!-- <div v-for="post in payload" :key="post.id"> -->
-  <div v-for="post in posts" :key="post.id" >
-  <h2>Tytuł: {{ post.title }}</h2>
-  <h2>Id Autora: {{ post.userId }}</h2>
-  <h3>Treść: {{ post.body }}</h3>
-  <button @click="getCurrentPost(post.id)" style="margin: 3px">Czytaj więcej</button>
-    <button @click="erraseCurrentPost" style="margin: 3px">Skasuj Post</button>
-  </div>
+    <div v-for="post in posts" :key="post.id">
+      <h2>Post ID: {{post.id}}</h2>
+      <h2>Tytuł: {{ post.title }}</h2>
+      <h2 style="color: red;">Author: {{ authorName(post.userId) }}</h2>
+      <h3>Body: {{ post.body }}</h3>
+      <button @click="getCurrentPost(post.id)" style="margin: 3px">Czytaj więcej</button>
+      <button @click="erraseCurrentPost(post.id)" style="margin: 3px">Skasuj Post</button>
+    </div>
 
 <post-list></post-list>
 </template>
@@ -27,6 +26,8 @@ import { onMounted, computed } from 'vue'
 import store from '../store'
 import PostList from '@/components/PostList.vue'
 
+// const strona = reactive([])
+
 const posts = computed(() => {
   return store.getters.getAllPosts
 })
@@ -34,24 +35,40 @@ const posts = computed(() => {
 const getposts = () => {
   store.dispatch('setAllPosts')
 }
-const erraselist = () => {
-  store.dispatch('errasePosts')
+
+const getusers = () => {
+  store.dispatch('setAllUsers')
+}
+
+const authorName = (id) => {
+  return store.getters.getCurrentUserName(id)
 }
 
 const totalposts = computed(() => {
   return store.getters.getTotalPosts
 })
 
-const erraseCurrentPost = () => {
-
+const erraseCurrentPost = (id) => {
+  console.log(id)
 }
 
 const getCurrentPost = (id) => {
   console.log(id)
+//   return store.getters.getCurrentPost(id)
 }
 
-const showCurrentPage = (id) => {
+const getCurrentPage = (id) => {
+  // let i = id
+  // console.log(i)
+  // do {
+  //   strona.value = strona.value.push(...store.getters.getCurrentPage(i))
+  //   i++
+  // }
+  // while (i < id + 10)
+
+  // console.log(strona)
   console.log(id)
+  // store.dispatch('setCurrentPage', id)
 }
 
 const paginnumbers = computed(() => {
@@ -60,7 +77,7 @@ const paginnumbers = computed(() => {
 
 onMounted(() => {
   getposts()
+  getusers()
   console.log('All post are fetched')
 })
-
 </script>
