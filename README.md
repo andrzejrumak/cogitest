@@ -1,5 +1,5 @@
-# cogitest
-test for Cogitech
+Vue CLI Vue 3 and Vuex - simple blog with pagination
+With API REST https://jsonplaceholder.typicode.com as data source.
 
 ## Project setup
 ```
